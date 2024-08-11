@@ -1,4 +1,4 @@
-﻿using BusinessDayCounter.Contracts.PublicHolidayRuleModel.Base;
+﻿using BusinessDayCounter.Contracts.PublicHolidayRuleModels.Base;
 
 namespace BusinessDayCounter.Contracts
 {

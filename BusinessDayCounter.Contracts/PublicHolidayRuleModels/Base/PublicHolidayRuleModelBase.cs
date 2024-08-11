@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BusinessDayCounter.Contracts.PublicHolidayRuleModel.Base
+namespace BusinessDayCounter.Contracts.PublicHolidayRuleModels.Base
 {
     public abstract class PublicHolidayRuleModelBase : IPublicHolidayRuleModel
     {

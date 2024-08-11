@@ -1,7 +1,7 @@
-﻿using BusinessDayCounter.Contracts.PublicHolidayRuleModel;
-using BusinessDayCounter.Contracts.PublicHolidayRuleModel.Base;
+﻿using BusinessDayCounter.Contracts.PublicHolidayRuleModels;
+using BusinessDayCounter.Contracts.PublicHolidayRuleModels.Base;
 
-namespace BusinessDayCounter.Logic
+namespace BusinessDayCounter.Tests.BusinessDayCounter.BusinessDayCounterTests
 {
     public static class PublicHolidaysTestData
     {

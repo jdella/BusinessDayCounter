@@ -1,6 +1,6 @@
-﻿using BusinessDayCounter.Contracts.PublicHolidayRuleModel.Base;
+﻿using BusinessDayCounter.Contracts.PublicHolidayRuleModels.Base;
 
-namespace BusinessDayCounter.Contracts.PublicHolidayRuleModel
+namespace BusinessDayCounter.Contracts.PublicHolidayRuleModels
 {
     public class ExactDateHolidayRule : PublicHolidayRuleModelBase
     {

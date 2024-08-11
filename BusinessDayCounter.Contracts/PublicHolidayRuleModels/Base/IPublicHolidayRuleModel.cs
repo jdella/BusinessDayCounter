@@ -1,4 +1,4 @@
-﻿namespace BusinessDayCounter.Contracts.PublicHolidayRuleModel.Base
+﻿namespace BusinessDayCounter.Contracts.PublicHolidayRuleModels.Base
 {
     public interface IPublicHolidayRuleModel
     {

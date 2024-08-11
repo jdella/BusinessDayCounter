@@ -1,5 +1,5 @@
 ﻿using BusinessDayCounter.Contracts;
-using BusinessDayCounter.Contracts.PublicHolidayRuleModel.Base;
+using BusinessDayCounter.Contracts.PublicHolidayRuleModels.Base;
 using BusinessDayCounter.Logic.Extensions;
 using BusinessDayCounter.Logic.PublicHolidayRules;
 

@@ -1,4 +1,3 @@
-using BusinessDayCounter.Logic;
 using BusinessDayCounter.Tests.BusinessDayCounter.WeekdayCounterTests;
 using BusinessDayCounter.Tests.BusinessDayCounter.WeekdayCounterTests.TestModels;
 using FluentAssertions;
