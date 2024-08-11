@@ -4,7 +4,6 @@
     {
         public static int WeekdaysUntilSunday(this DayOfWeek dayOfWeek)
         {
-            //var daysTilSunday = DaysTilSunday(dayOfWeek);
             var daysTilSunday = dayOfWeek.DaysTil(DayOfWeek.Sunday);
             return daysTilSunday < 2 ? 0 : daysTilSunday - 1;
         }

@@ -24,7 +24,5 @@ namespace BusinessDayCounter.Tests.BusinessDayCounter.WeekdayCounterTests
             result.Should().Be(test.Expected, because: $"{test.Expected} days between {test.FirstDate} and {test.SecondDate}");
         }
 
-
-
     }
 }

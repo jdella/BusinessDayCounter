@@ -5,7 +5,6 @@ namespace BusinessDayCounter.Tests.DateTimeExtenstionTests
 {
     public class DayOFWeekExtensionTests
     {
-
         [Theory]
         [InlineData(DayOfWeek.Sunday, 0)]
         [InlineData(DayOfWeek.Monday, 6)]
@@ -19,7 +18,6 @@ namespace BusinessDayCounter.Tests.DateTimeExtenstionTests
             var result = dayOfWeek.DaysTil(DayOfWeek.Sunday);
             result.Should().Be(expected, because: $"{expected} days between {dayOfWeek} and Sunday");
         }
-
 
         [Theory]
         [InlineData(DayOfWeek.Sunday, 0)]
@@ -47,7 +45,5 @@ namespace BusinessDayCounter.Tests.DateTimeExtenstionTests
             var result = fromDayOfWeek.DaysTil(toDayOfWeek);
             result.Should().Be(expected, because: $"{expected} days between {fromDayOfWeek} and {toDayOfWeek}");
         }
-
-
     }
 }

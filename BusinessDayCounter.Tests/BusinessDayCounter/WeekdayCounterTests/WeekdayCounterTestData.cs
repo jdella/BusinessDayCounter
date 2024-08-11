@@ -2,7 +2,6 @@
 
 namespace BusinessDayCounter.Tests.BusinessDayCounter.WeekdayCounterTests
 {
-
     public static class WeekdayCounterTestData
     {
         public static TheoryData WeekdaysBetweenTestCases => new TheoryData<WeekdayCounterTestModel>()
@@ -36,6 +35,10 @@ namespace BusinessDayCounter.Tests.BusinessDayCounter.WeekdayCounterTests
 
         };
 
+        /*  TODO: SHOULD INCLUDE FOLLOWING UNIT TESTS (should get PH on Mon & Tues - these would fail right now)
+         *      - Year where Christmas fell on Sat, Boxing Day Sunday 
+         *      - Year where Christmas fell on Sun, Boxing Day Monday
+         */
         public static TheoryData PublicHolidayTestCases => new TheoryData<WeekdayCounterTestModel>()
         {
             new WeekdayCounterTestModel {

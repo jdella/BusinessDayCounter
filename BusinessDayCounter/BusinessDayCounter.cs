@@ -1,4 +1,5 @@
 ﻿using BusinessDayCounter.Contracts;
+using BusinessDayCounter.Contracts.PublicHolidayRuleModel.Base;
 using BusinessDayCounter.Logic.Extensions;
 using BusinessDayCounter.Logic.PublicHolidayRules;
 
@@ -79,7 +80,7 @@ namespace BusinessDayCounter.Logic
         /// <summary>
         /// Calculates number of (whole) business (week) days with a range, minus any holidays provided that fall in the range.
         /// The <paramref name="firstDate"/> and <paramref name="secondDate"/> themselves are not counted.
-        /// Public holidays are determined by provided list of <see cref="IPublicHoliday"/> rules.
+        /// Public holidays are determined by provided list of <see cref="IPublicHolidayRuleModel"/> rules.
         /// </summary>
         /// <param name="firstDate"></param>
         /// <param name="secondDate"></param>
@@ -89,7 +90,8 @@ namespace BusinessDayCounter.Logic
         /// that aren't public holidays (based on provided <paramref name="publicHolidays"/>)
         /// If <paramref name="secondDate"/> is same or before <paramref name="firstDate"/>, 0 will be returned.
         /// </returns>
-        public int BusinessDaysBetweenTwoDates(DateTime firstDate, DateTime secondDate, IList<IPublicHoliday> publicHolidays)
+        public int BusinessDaysBetweenTwoDates(DateTime firstDate, DateTime secondDate, 
+            IList<IPublicHolidayRuleModel> publicHolidays)
         {
             // start by getting the total number of weekdays between the two dates
             var weekDaysBetweenDates = WeekdaysBetweenTwoDates(firstDate, secondDate);
@@ -106,9 +108,10 @@ namespace BusinessDayCounter.Logic
             {
                 var startMonth = year == firstDate.Year ? firstDate.Month : 1;
                 var endMonth = year == secondDate.Year ? secondDate.Month : 12;
-                foreach (var ph in publicHolidays.Where(x => x.HolidayMonth >= startMonth && x.HolidayMonth <= endMonth))
+                foreach (var ph in 
+                    publicHolidays.Where(x => x.HolidayMonth >= startMonth && x.HolidayMonth <= endMonth))
                 {
-                    publicHolidaysInRange.Add(ph.GetPublicHolidayDate(year));
+                    publicHolidaysInRange.Add(PublicHolidayRuleHandler.GetPublicHolidayDate(year, ph));
                 }
                 year++;
             }
