@@ -61,20 +61,8 @@ namespace BusinessDayCounter.Logic
         /// </returns>
         public int BusinessDaysBetweenTwoDates(DateTime firstDate, DateTime secondDate, IList<DateTime> publicHolidays)
         {
-            // start by getting the total number of weekdays between the two dates
-            var weekDaysBetweenDates = WeekdaysBetweenTwoDates(firstDate, secondDate);
-
-            if (weekDaysBetweenDates == 0)
-                return 0;
-
-            // now find if any public holidays fall within those dates
-            // make sure these public holidays are actually weekdays
-            var firstDateToCount = firstDate.Date.AddDays(1);
-            var numberOfPublicHolidays = publicHolidays
-                .Where(x => IsPublicHolidayInRangeAndWeekday(x.Date, firstDateToCount, secondDate.Date))
-                .Count();
-
-            return weekDaysBetweenDates - numberOfPublicHolidays;
+            return GetBusinessDaysBetweenTwoDates(firstDate, secondDate,
+                () => CountPublicHolidaysInRange(firstDate, secondDate, publicHolidays));
         }
 
         /// <summary>
@@ -90,17 +78,37 @@ namespace BusinessDayCounter.Logic
         /// that aren't public holidays (based on provided <paramref name="publicHolidays"/>)
         /// If <paramref name="secondDate"/> is same or before <paramref name="firstDate"/>, 0 will be returned.
         /// </returns>
-        public int BusinessDaysBetweenTwoDates(DateTime firstDate, DateTime secondDate, 
+        public int BusinessDaysBetweenTwoDates(DateTime firstDate, DateTime secondDate,
             IList<IPublicHolidayRuleModel> publicHolidays)
+        {
+            return GetBusinessDaysBetweenTwoDates(firstDate, secondDate,
+                () => CountPublicHolidaysInRange(firstDate, secondDate, publicHolidays));
+        }
+
+        private int GetBusinessDaysBetweenTwoDates(DateTime firstDate, DateTime secondDate, Func<int> countFunc)
         {
             // start by getting the total number of weekdays between the two dates
             var weekDaysBetweenDates = WeekdaysBetweenTwoDates(firstDate, secondDate);
 
-            // Note: this guards against second date being before first date which would cause infinite while loop below
+            // Note: this also guards against second date being before first date
             if (weekDaysBetweenDates == 0)
                 return 0;
 
-            var firstDateToCount = firstDate.Date.AddDays(1); // first day not counted
+            return weekDaysBetweenDates - countFunc();
+        }
+
+        private int CountPublicHolidaysInRange(DateTime firstDate, DateTime secondDate, IList<DateTime> publicHolidays)
+        {
+            var firstDateToCount = firstDate.Date.AddDays(1); // first date doesnt count
+            return publicHolidays
+                .Where(x => IsPublicHolidayInRangeAndWeekday(x.Date, firstDateToCount, secondDate.Date))
+                .Count();
+        }
+
+        private int CountPublicHolidaysInRange(DateTime firstDate, DateTime secondDate, IList<IPublicHolidayRuleModel> publicHolidays)
+        {
+            // we reassign firstDate here for a couple of reasons but mainly because its referenced in multiple places this can help avoid logic errors
+            firstDate = firstDate.Date.AddDays(1);
 
             var publicHolidaysInRange = new List<DateTime?>();
             var year = firstDate.Year;
@@ -108,16 +116,14 @@ namespace BusinessDayCounter.Logic
             {
                 var startMonth = year == firstDate.Year ? firstDate.Month : 1;
                 var endMonth = year == secondDate.Year ? secondDate.Month : 12;
-                foreach (var ph in 
+                foreach (var ph in
                     publicHolidays.Where(x => x.HolidayMonth >= startMonth && x.HolidayMonth <= endMonth))
                 {
                     publicHolidaysInRange.Add(PublicHolidayRuleHandler.GetPublicHolidayDate(year, ph));
                 }
                 year++;
             }
-
-            return weekDaysBetweenDates -
-                publicHolidaysInRange.Count(x => IsPublicHolidayInRangeAndWeekday(x, firstDateToCount, secondDate.Date));
+            return publicHolidaysInRange.Count(x => IsPublicHolidayInRangeAndWeekday(x, firstDate.Date, secondDate.Date));
         }
 
         /// <summary>
@@ -135,7 +141,6 @@ namespace BusinessDayCounter.Logic
                 && publicHolidayDate >= firstDate
                 && publicHolidayDate < secondDate
                 && publicHolidayDate.Value.IsWeekday(); // safegaurd as weekends won't affect counts (just in case)
-
 
         /// <summary>
         /// Calculates num days **between** two dates, non-inclusive of dates provided.
@@ -162,7 +167,6 @@ namespace BusinessDayCounter.Logic
             // there shouldnt be as we're only dealing with the date parts
             return (int)(secondDate - firstDate).TotalDays;
         }
-
 
     }
 }
